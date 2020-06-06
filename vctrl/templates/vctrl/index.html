@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ section.title }}</h1>
+{% if RevertibleVMs %}
+    <ul>
+    {% for VM in RevertibleVMs %}
+
+        <li>
+            <form action="{% url 'revertvm' %}" method="post">
+                {% csrf_token %}
+                <strong>{{ VM.name }}:
+                </strong>
+                    <button type="submit" name="vm_name" value="{{VM.name }}">Revert
+                    </button>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Either the Scenario hasn't started yet, or VMs are still being brought up. Check back later!</p>
+{% endif %}
+{% endblock %}
