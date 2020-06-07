@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest
-from .models import VM
 from os import chdir, getcwd
-import subprocess
+
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render
+
+from .models import VM
+
 
 # Create your views here.
 def index(request):
@@ -21,7 +23,7 @@ def revertvm(request):
     vm = VM.objects.filter(name=request.POST["vm_name"])[0]
 
     if vm:
-        # subprocess.Popen(["vagrant restore {} clean".format(vm.name)])
+        # Replace with helper function in vagrant.py
         print("I would have run this command: vagrant restore {} clean".format(vm.name)) # Debug
         # Restore previous directory
         chdir(cwd)

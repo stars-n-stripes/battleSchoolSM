@@ -21,7 +21,8 @@ media
 .idea/**/dynamic.xml 
 .idea/**/uiDesigner.xml 
 .idea/**/gradle.xml 
-.idea/**/libraries 
+.idea/**/libraries
+.idea/vcs.xml
 *.iws /out/ 
 
 # Python # 
