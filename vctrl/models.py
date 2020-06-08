@@ -1,14 +1,15 @@
 from django.db import models
-from django.utils import timezone
+
 
 # Create your models here.
 class Scenario(models.Model):
     def __str__(self):
         return self.name
-    def is_expired(self):
-        return timezone.now() > self.end
+
+    # def is_expired(self):
+    #     return timezone.now() > self.end
     name = models.CharField(max_length=200)
-    # dir = models.CharField(max_length=200)
+    dir = models.CharField(max_length=200)
     duration = models.DurationField("Scenario time limit, in hours")
     start = models.DateTimeField()
 
@@ -34,8 +35,12 @@ class Flag(models.Model):
     vm = models.ForeignKey(VM, on_delete=models.CASCADE)
     captured = models.BooleanField("Whether or not the student has found this flag.", default=False)
 
+
 class Student(models.Model):
     def __str__(self):
         return self.name
+
     name = models.CharField(max_length=200)
     kali = models.ForeignKey(VM, on_delete=models.CASCADE)
+
+# VAGRANT HELPER FUNCTIONS

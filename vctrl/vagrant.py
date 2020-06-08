@@ -3,9 +3,8 @@ import os
 import re
 import subprocess
 
-from .models import VM, Scenario
+from vctrl.models import VM, Scenario
 
-SCENARIO_DIRECTORY = '/scenario'
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
 SCENARIO = Scenario.objects.get(pk=1)
@@ -15,7 +14,11 @@ if not SCENARIO:
     # Create an empty Scenario
     logging.warning("vagrant.py: Could not find scenario in database; creating empty Scenario")
     SCENARIO = Scenario()
+    SCENARIO.dir = '/scenario'
     SCENARIO.save()
+
+SCENARIO = Scenario.objects.get(pk=1)
+SCENARIO_DIRECTORY = SCENARIO.dir
 
 
 def scenario_status(name=None, status=None):
