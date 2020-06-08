@@ -88,17 +88,25 @@ def revert_vm(name, snapshot_name="clean"):
     os.chdir(SCENARIO_DIRECTORY)
     # subprocess.Popen(["vagrant restore {} clean".format(vm.name)])
     proc = subprocess.run(["vagrant", "restore", name, snapshot_name], capture_output=True)
-    # TODO: Finish implementation.
+    logging.debug("revert_vm STDOUT: {}".format(proc.stdout))
+    logging.warning("revert_vm STDERR: {}".format(proc.stderr))
+
     os.chdir(old_cwd)
-    raise NotImplementedError
 
 
 def snapshot_vm(name, snapshot_name="clean"):
+    """
+    Create a snapshot of the given VM with the default VM name "clean"
+    :param name:
+    :param snapshot_name:
+    :return:
+    """
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
-    # TODO: Implement.
+    proc = subprocess.run(["vagrant", "snapshot", "save", name, snapshot_name], capture_output=True)
+    logging.debug("snapshot_vm STDOUT: {}".format(proc.stdout))
+    logging.warning("snapshot_vm STDERR: {}".format(proc.stderr))
     os.chdir(old_cwd)
-    raise NotImplementedError
 
 
 def sync_scenario():
