@@ -1,5 +1,4 @@
 from django.db import models
-import datetime
 from django.utils import timezone
 
 # Create your models here.
@@ -9,7 +8,7 @@ class Scenario(models.Model):
     def is_expired(self):
         return timezone.now() > self.end
     name = models.CharField(max_length=200)
-    dir = models.CharField(max_length=200)
+    # dir = models.CharField(max_length=200)
     duration = models.DurationField("Scenario time limit, in hours")
     start = models.DateTimeField()
 
