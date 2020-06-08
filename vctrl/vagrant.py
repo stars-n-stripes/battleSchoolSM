@@ -7,14 +7,15 @@ from vctrl.models import VM, Scenario
 
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
-SCENARIO = Scenario.objects.get(pk=1)
+try:
+    SCENARIO = Scenario.objects.get(pk=1)
 
-if not SCENARIO:
+except Scenario.DoesNotExist:
     # raise Exception("No Scenario found! Please make sure there's a scenario in the database")
     # Create an empty Scenario
     logging.warning("vagrant.py: Could not find scenario in database; creating empty Scenario")
     SCENARIO = Scenario()
-    SCENARIO.dir = '/scenario'
+    SCENARIO.dir = '.'
     SCENARIO.save()
 
 SCENARIO = Scenario.objects.get(pk=1)
@@ -65,6 +66,11 @@ def sync_vms():
     :return: None
     """
     vms = scenario_status()
+
+    if not vms:
+        logging.warning("sync_vms: No VMs reported by scenario_status, no action taken")
+        return
+
     for vm in vms:
         logging.debug("sync_vms: Processing vm: {}".format(vm.name))
         # Check if that VM is in the database already

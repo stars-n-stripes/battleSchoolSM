@@ -11,6 +11,4 @@ class VctrlConfig(AppConfig):
 
     def ready(self):
         # Startup code here
-        # TODO: Add code here to populate the database with the VMs in the scenario, as well as the Scenario itself.
-        from . import vagrant
-        vagrant.sync_vms()
+        pass

@@ -3,11 +3,14 @@ from os import chdir, getcwd
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
+from . import vagrant
 from .models import VM
 
 
 # Create your views here.
 def index(request):
+    # Sync the VM database
+    vagrant.sync_vms()
     # Pull all VMs that are accessible by the student
     RevertibleVMs = VM.objects.order_by('-name') & VM.objects.exclude(revertible=False)
     context = {'RevertibleVMs': RevertibleVMs}

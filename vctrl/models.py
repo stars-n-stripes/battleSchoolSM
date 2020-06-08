@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.db import models
 
 
@@ -10,8 +12,8 @@ class Scenario(models.Model):
     #     return timezone.now() > self.end
     name = models.CharField(max_length=200)
     dir = models.CharField(max_length=200)
-    duration = models.DurationField("Scenario time limit, in hours")
-    start = models.DateTimeField()
+    duration = models.DurationField("Scenario time limit, in hours", default=timedelta(hours=1))
+    start = models.DateTimeField(default=datetime.now())
 
 
 
