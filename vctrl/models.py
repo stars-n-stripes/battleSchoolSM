@@ -10,8 +10,10 @@ class Scenario(models.Model):
 
     # def is_expired(self):
     #     return timezone.now() > self.end
-    name = models.CharField(max_length=200)
-    dir = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, default="default")
+    dir = models.CharField(max_length=200, default=".")
+    description = models.CharField(max_length=200,
+                                   default="The default scenario that BSSM loads in the absence of a regular scenario.ini file")
     duration = models.DurationField("Scenario time limit, in hours", default=timedelta(hours=1))
     start = models.DateTimeField(default=datetime.now())
 

@@ -10,16 +10,20 @@ from vctrl.models import VM, Scenario
 try:
     SCENARIO = Scenario.objects.get(pk=1)
 
-except Scenario.DoesNotExist:
+except Exception as e:
+    logging.error("Exception raised during vagrant.py import: {}".format(e.__str__()))
     # raise Exception("No Scenario found! Please make sure there's a scenario in the database")
     # Create an empty Scenario
     logging.warning("vagrant.py: Could not find scenario in database; creating empty Scenario")
+    # Try to pull Scenario information from the environment
+    # SCENARIO = Scenario()
+    # SCENARIO.dir = '.'
+    # SCENARIO.save()
+    # SCENARIO = Scenario.objects.get(pk=1)
     SCENARIO = Scenario()
-    SCENARIO.dir = '.'
-    SCENARIO.save()
 
-SCENARIO = Scenario.objects.get(pk=1)
-SCENARIO_DIRECTORY = SCENARIO.dir
+# SCENARIO_DIRECTORY = SCENARIO.dir
+SCENARIO_DIRECTORY = "."
 
 
 def scenario_status(name=None, status=None):
