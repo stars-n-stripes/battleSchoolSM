@@ -9,6 +9,7 @@ from vctrl.models import VM, Scenario
 # FIXME: Should we plan for more than one scenario to be in the Database?
 try:
     SCENARIO = Scenario.objects.get(pk=1)
+    SCENARIO_DIRECTORY = SCENARIO.dir
 
 except Exception as e:
     logging.error("Exception raised during vagrant.py import: {}".format(e.__str__()))
@@ -21,9 +22,37 @@ except Exception as e:
     # SCENARIO.save()
     # SCENARIO = Scenario.objects.get(pk=1)
     SCENARIO = Scenario()
+    SCENARIO_DIRECTORY = "."
 
-# SCENARIO_DIRECTORY = SCENARIO.dir
-SCENARIO_DIRECTORY = "."
+
+def update_scenario():
+    # Reruns the SCENARIO variable selection from import
+    # Skip if we already have a Scenario that's not the default
+    # This is mainly designed for the interim between server load and Scenario insertion
+    global SCENARIO
+    global SCENARIO_DIRECTORY
+
+    if SCENARIO.name != "default":
+        logging.debug("update_scenario: Non-default Scenario found, skipping update")
+        return
+
+    try:
+        SCENARIO = Scenario.objects.get(pk=1)
+        SCENARIO_DIRECTORY = SCENARIO.dir
+        logging.debug("update_scenario: Scenario has been updated to {}".format(SCENARIO.name))
+
+    except Exception as e:
+        logging.error("Exception raised during vagrant.py import: {}".format(e.__str__()))
+        # raise Exception("No Scenario found! Please make sure there's a scenario in the database")
+        # Create an empty Scenario
+        logging.warning("vagrant.py: Could not find scenario in database; creating empty Scenario")
+        # Try to pull Scenario information from the environment
+        # SCENARIO = Scenario()
+        # SCENARIO.dir = '.'
+        # SCENARIO.save()
+        # SCENARIO = Scenario.objects.get(pk=1)
+        SCENARIO = Scenario()
+        SCENARIO_DIRECTORY = "."
 
 
 def scenario_status(name=None, status=None):

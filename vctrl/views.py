@@ -9,7 +9,8 @@ from .models import VM
 
 # Create your views here.
 def index(request):
-    # Sync the VM database
+    # Update the Scenario and sync the VM database
+    vagrant.update_scenario()
     vagrant.sync_vms()
     # Pull all VMs that are accessible by the student
     RevertibleVMs = VM.objects.order_by('-name') & VM.objects.exclude(revertible=False)
