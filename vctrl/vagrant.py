@@ -119,12 +119,14 @@ def sync_vms():
             SCENARIO.vm_set.create(name=vm.name, status=vm.status)
 
 
-def revert_vm(name, snapshot_name="clean"):
+def revert_vm(name, snapshot_name="clean", output=True):
     """
     Use a subprocess command to make a vagrant revert call and track its output
     :param name:
     :param snapshot_name:
-    :return:
+    :param bool output: Whether or not we would like the output to be returned
+    :return A tuple with the standard output and error buffers from the vagrant process
+    :rtype tuple(str, str)
     """
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
@@ -134,6 +136,7 @@ def revert_vm(name, snapshot_name="clean"):
     logging.warning("revert_vm STDERR: {}".format(proc.stderr))
 
     os.chdir(old_cwd)
+    return (proc.stdout, proc.stderr)
 
 
 def snapshot_vm(name, snapshot_name="clean"):
@@ -149,7 +152,6 @@ def snapshot_vm(name, snapshot_name="clean"):
     logging.debug("snapshot_vm STDOUT: {}".format(proc.stdout))
     logging.warning("snapshot_vm STDERR: {}".format(proc.stderr))
     os.chdir(old_cwd)
-
 
 def sync_scenario():
     """

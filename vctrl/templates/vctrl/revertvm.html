@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ section.title }}</h1>
+
+    <strong>{{ Message }}</strong>
+    <br>
+    <i>This page will redirect 5 seconds after load. If it does not, click <a href="index.html">here</a>.</i>
+
+
+    <script>
+        function redirect() {
+            window.location.href = "index.html";
+        }
+
+        setTimeout(redirect, 5); //2000 is equivalent to 2 seconds
+    </script>
+{% endblock %}

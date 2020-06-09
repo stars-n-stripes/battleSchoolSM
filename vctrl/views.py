@@ -1,6 +1,5 @@
-from os import chdir, getcwd
+from os import getcwd
 
-from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 
 from . import vagrant
@@ -19,22 +18,31 @@ def index(request):
     return render(request, 'vctrl/index.html', context)
 
 
+def cancel_scenario(request):
+    # Accepts POST page for scenario cancel
+    # Probably just a redirect back to index
+    pass
+
+
 def revertvm(request):
     # Save cwd so we can return to it; move to the Vagrant project directory
     cwd = getcwd()
-    chdir("/") # Debug
+    # chdir("/") # Debug
     # chdir("/scenario") # TODO: Make this dynamic to wherever the Vagrant directory is
     vm = VM.objects.filter(name=request.POST["vm_name"])[0]
 
     if vm:
         # Replace with helper function in vagrant.py
-        print("I would have run this command: vagrant restore {} clean".format(vm.name)) # Debug
+        # print("I would have run this command: vagrant restore {} clean".format(vm.name)) # Debug
+        vagrant.revert_vm(vm.name)
         # Restore previous directory
-        chdir(cwd)
-        response = HttpResponse("Reverting {}".format(vm.name)) # TODO: Change to view showing VM revert progress
+        # chdir(cwd)
+        context = {"Message": "Reverted {}".format(vm.name)}  # TODO: Change to view showing VM revert progress
+        return render(request, 'vctrl/revertvm.html', context)
     else:
-        response = HttpResponseBadRequest("VM not found")
+        context = {"Message": "Could not find VM {}".format(vm.name)}
+        return render(request, 'vctrl/revertvm.html', context)
 
-    # Restore previous directory
-    chdir(cwd)
-    return response
+
+def load_scenario(request):
+    pass
