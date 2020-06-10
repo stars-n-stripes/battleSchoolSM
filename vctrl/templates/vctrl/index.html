@@ -3,16 +3,47 @@
 {% block title %}{{ section.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ section.title }}</h1>
-{% if RevertibleVMs %}
-    <ul>
-    {% for VM in RevertibleVMs %}
+    <h1>{{ section.title }}</h1>
+    {% if Scenarios %}
+        <h2>Active Scenarios:</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Start Time</th>
+                <th>Duration</th>
+                <th>Action</th>
+            </tr>
+            {% for Scenario in Scenarios %}
+                <td>{{ Scenario.name }}</td>
+                <td>{{ Scenario.start }}</td>
+                <td>{{ Scenario.duration }}</td>
+                <td>
+                    <form action="{% url 'stopscenario' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="scenario_name" value="{{ Scenario.name }}">
+                            Stop
+                        </button>
+                    </form>
+                </td>
+            {% endfor %}
+        </table>
+    {% else %}
+        <i>No Scenario loaded! </i>
+        <br>
+        <form action="{% url 'startscenario' %}" method="get">
+            <button type="submit">Browse Scenarios</button>
+        </form>
+    {% endif %}
+    {% if RevertibleVMs %}
+        <h2>Active Virtual Machines:</h2>
+        <ul>
+            {% for VM in RevertibleVMs %}
 
-        <li>
-            <form action="{% url 'revertvm' %}" method="post">
-                {% csrf_token %}
-                <strong>{{ VM.name }}:
-                </strong>
+                <li>
+                    <form action="{% url 'revertvm' %}" method="post">
+                        {% csrf_token %}
+                        <strong>{{ VM.name }}:
+                        </strong>
                     <button type="submit" name="vm_name" value="{{VM.name }}">Revert
                     </button>
             </form>

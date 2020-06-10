@@ -3,7 +3,7 @@ from os import getcwd
 from django.shortcuts import render
 
 from . import vagrant
-from .models import VM
+from .models import VM, Scenario
 
 
 # Create your views here.
@@ -13,7 +13,8 @@ def index(request):
     vagrant.sync_vms()
     # Pull all VMs that are accessible by the student
     RevertibleVMs = VM.objects.order_by('-name') & VM.objects.exclude(revertible=False)
-    context = {'RevertibleVMs': RevertibleVMs}
+    Scenarios = Scenario.objects.order_by('-name')
+    context = {'RevertibleVMs': RevertibleVMs, "Scenarios": Scenarios}
     # return HttpResponse("This is the index for the Vagrant Control (vctrl) App.")
     return render(request, 'vctrl/index.html', context)
 
@@ -34,6 +35,7 @@ def revertvm(request):
     if vm:
         # Replace with helper function in vagrant.py
         # print("I would have run this command: vagrant restore {} clean".format(vm.name)) # Debug
+        # asyncio.run(vagrant.vagrant_cmd("vagrant", "revert", vm.name, "clean"))
         vagrant.revert_vm(vm.name)
         # Restore previous directory
         # chdir(cwd)

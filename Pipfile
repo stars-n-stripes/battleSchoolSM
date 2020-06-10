@@ -9,6 +9,7 @@ verify_ssl = true
 django = "*"
 python-vagrant = "*"
 celery = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 import re
@@ -23,6 +24,22 @@ except Exception as e:
     # SCENARIO = Scenario.objects.get(pk=1)
     SCENARIO = Scenario()
     SCENARIO_DIRECTORY = "."
+
+
+async def vagrant_cmd(*args):
+    """
+    Runs a vagrant command asynchronously
+    :param str vcmd: Shell command to run
+    :return:
+    """
+    proc = await asyncio.create_subprocess_exec(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *args)
+    stdout, stderr = await proc.communicate()
+
+    print("{} exited with status code {}".format(args[0], proc.returncode))
+    if stdout:
+        print(f'[stdout]\n{stdout.decode()}')
+    if stderr:
+        print(f'[stderr]\n{stderr.decode()}')
 
 
 def update_scenario():
@@ -69,7 +86,9 @@ def scenario_status(name=None, status=None):
     :rtype: dict
     https://docs.python.org/3/library/re.html
     """
+
     old_cwd = os.getcwd()
+    logging.debug("scenario_status: Moving cwd from {} -> {}".format(old_cwd, SCENARIO_DIRECTORY))
     os.chdir(SCENARIO_DIRECTORY)
     status_re = re.compile(r"^(?P<name>\w[^ {2,}]+)\s+(?P<status>.+) \(.+\)", flags=re.MULTILINE)
     # Make a vagrant status call and collect STDOUT
