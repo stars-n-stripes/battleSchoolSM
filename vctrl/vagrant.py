@@ -70,6 +70,7 @@ def update_scenario():
         # SCENARIO = Scenario.objects.get(pk=1)
         SCENARIO = Scenario()
         SCENARIO_DIRECTORY = "."
+        SCENARIO.save()
 
 
 def scenario_status(name=None, status=None):
@@ -88,7 +89,7 @@ def scenario_status(name=None, status=None):
     """
 
     old_cwd = os.getcwd()
-    logging.debug("scenario_status: Moving cwd from {} -> {}".format(old_cwd, SCENARIO_DIRECTORY))
+    logging.warning("scenario_status: Moving cwd from {} -> {}".format(old_cwd, SCENARIO_DIRECTORY))
     os.chdir(SCENARIO_DIRECTORY)
     status_re = re.compile(r"^(?P<name>\w[^ {2,}]+)\s+(?P<status>.+) \(.+\)", flags=re.MULTILINE)
     # Make a vagrant status call and collect STDOUT

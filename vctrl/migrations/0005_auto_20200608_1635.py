@@ -2,6 +2,7 @@
 
 import configparser
 import datetime
+import logging
 
 from django.db import migrations
 
@@ -19,6 +20,7 @@ def load_scenario(apps, schema_editor):
     parser = configparser.ConfigParser()
     try:
         with open(CONFIG_FILE, "r") as ini_file:
+            logging.debug("load_scenario: reading config from file in /scenario")
             parser.read_file(ini_file)
         s_name = parser.get("Scenario", "name")
         s_duration = parser.get("Scenario", "duration")
