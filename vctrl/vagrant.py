@@ -1,4 +1,6 @@
 import asyncio
+import configparser
+import datetime
 import logging
 import os
 import re
@@ -8,22 +10,36 @@ from vctrl.models import VM, Scenario
 
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
+
+# TODO: Figure out whether or not hard coding this is absolutely necessary
+CONFIG_FILE = "/scenario/scenario.ini"
+
 try:
     SCENARIO = Scenario.objects.get(pk=1)
     SCENARIO_DIRECTORY = SCENARIO.dir
 
 except Exception as e:
     logging.error("Exception raised during vagrant.py import: {}".format(e.__str__()))
-    # raise Exception("No Scenario found! Please make sure there's a scenario in the database")
-    # Create an empty Scenario
-    logging.warning("vagrant.py: Could not find scenario in database; creating empty Scenario")
-    # Try to pull Scenario information from the environment
-    # SCENARIO = Scenario()
-    # SCENARIO.dir = '.'
-    # SCENARIO.save()
-    # SCENARIO = Scenario.objects.get(pk=1)
-    SCENARIO = Scenario()
-    SCENARIO_DIRECTORY = "."
+    parser = configparser.ConfigParser()
+    try:
+        with open(CONFIG_FILE, "r") as ini_file:
+            logging.debug("load_scenario: reading config from file in /scenario")
+            parser.read_file(ini_file)
+        s_name = parser.get("Scenario", "name")
+        s_duration = parser.get("Scenario", "duration")
+        s_description = parser.get("Scenario", "description")
+        s_dir = "/scenario"
+        # TODO: Do we want to put in an option to set this value?
+        s_start = datetime.datetime.now()
+        init_scenario = Scenario(name=s_name, start=s_start, dir=s_dir, duration=s_duration)
+        init_scenario.save()
+
+    except FileNotFoundError:
+        # Load the default Scenario config located in the app root
+        logging.debug(
+            "vagrant.py couldn't find a scenario.ini file in {}, creating default Scenario".format(SCENARIO_DIRECTORY))
+        init_scenario = Scenario()
+        init_scenario.save()
 
 
 async def vagrant_cmd(*args):
