@@ -8,6 +8,7 @@ import subprocess
 
 from vctrl.models import VM, Scenario
 from django.conf import settings
+from datetime import timedelta
 
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
@@ -29,7 +30,8 @@ except Exception as e:
             logging.debug("load_scenario: reading config from file in /scenario")
             parser.read_file(ini_file)
         s_name = parser.get("Scenario", "name")
-        s_duration = parser.get("Scenario", "duration")
+        s_duration = timedelta(hours=int(parser.get("Scenario", "duration")))
+
         s_description = parser.get("Scenario", "description")
         s_dir = "/scenario"
         # TODO: Do we want to put in an option to set this value?
