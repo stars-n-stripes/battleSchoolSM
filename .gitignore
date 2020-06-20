@@ -5,6 +5,8 @@
 __pycache__
 db.sqlite3
 media
+# Migrations - this project shouldn't need to keep them around #
+**/migrations/
 
 # Backup files # 
 *.bak 

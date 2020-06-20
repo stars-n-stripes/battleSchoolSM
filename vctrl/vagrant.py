@@ -7,12 +7,15 @@ import re
 import subprocess
 
 from vctrl.models import VM, Scenario
+from django.conf import settings
 
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
 
 # TODO: Figure out whether or not hard coding this is absolutely necessary
-CONFIG_FILE = "/scenario/scenario.ini"
+# CONFIG_FILE = "/scenario/scenario.ini"
+CONFIG_FILE = settings.SCENARIO_CONFIG
+
 
 try:
     SCENARIO = Scenario.objects.get(pk=1)
@@ -37,9 +40,11 @@ except Exception as e:
     except FileNotFoundError:
         # Load the default Scenario config located in the app root
         logging.debug(
-            "vagrant.py couldn't find a scenario.ini file in {}, creating default Scenario".format(SCENARIO_DIRECTORY))
+            "vagrant.py couldn't find a scenario.ini file in {}, creating default Scenario".format(CONFIG_FILE))
         init_scenario = Scenario()
         init_scenario.save()
+        SCENARIO = init_scenario
+        SCENARIO_DIR = init_scenario.dir
 
 
 async def vagrant_cmd(*args):

@@ -125,3 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Default scenario location and backup (mainly for dev)
+SCENARIO_CONFIG = '/scenario/scenario.ini'
+SCENARIO_CONFIG_DEV = './scenario.ini'

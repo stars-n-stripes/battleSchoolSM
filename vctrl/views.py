@@ -1,8 +1,15 @@
+import logging
 from os import getcwd
 
 from django.shortcuts import render
 
-from . import vagrant
+from django.db.utils import OperationalError
+
+try:
+  from . import vagrant
+except OperationalError:
+  # We hit this code if the DB is being built from scratch.
+  logging.warning("OperationalError hit during vagrant import. If this is happening during a migration, you may ignore this.")
 from .models import VM, Scenario
 
 
