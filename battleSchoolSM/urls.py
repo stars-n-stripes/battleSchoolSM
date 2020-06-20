@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Third line here causes the root to redirect to vctrl
 urlpatterns = [
     path('admin/', admin.site.urls),
     path ('vctrl/', include('vctrl.urls')),
