@@ -25,7 +25,7 @@ SECRET_KEY = 'e8zw)5!&^pj18hxiq-j+d+l##p&dd4*t&viu-%$mxv5gxv(@#%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bssm.jcl.guru']
 
 
 # Application definition
