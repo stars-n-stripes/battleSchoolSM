@@ -16,6 +16,9 @@ class Scenario(models.Model):
                                    default="The default scenario that BSSM loads in the absence of a regular scenario.ini file")
     duration = models.DurationField("Scenario time limit, in hours", default=timedelta(hours=1))
     start = models.DateTimeField(default=datetime.now())
+    def remaining(self):
+        # Return either the remaining duration or zero if the scenario has expired
+        return min((self.start + self.duration) - datetime.now(), 0)
 
 
 
