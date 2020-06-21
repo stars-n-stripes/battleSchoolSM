@@ -30,7 +30,8 @@ SECRET_KEY = 'e8zw)5!&^pj18hxiq-j+d+l##p&dd4*t&viu-%$mxv5gxv(@#%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bssm.jcl.guru']
+# TODO: Obsfucate the irregular IP with an /etc/hosts definition during student VM provisioning
+ALLOWED_HOSTS = ['bssm.jcl.guru', "192.168.33.1"]
 
 
 # Application definition
