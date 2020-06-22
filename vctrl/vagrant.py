@@ -156,11 +156,15 @@ def sync_vms():
             logging.debug("sync_vms: VM exists in database, updating status only")
             db_vm[0].status = vm.status
             db_vm[0].save()
+
+
         else:
             # Save this temporary VM to the database
             logging.debug("sync_vms: VM does not exist, saving temporary VM to database")
             SCENARIO.vm_set.create(name=vm.name, status=vm.status)
 
+            # Create a snapshot for us to interact with later
+            snapshot_vm(vm.name)
 
 def revert_vm(name, snapshot_name="clean", output=True):
     """
@@ -174,6 +178,7 @@ def revert_vm(name, snapshot_name="clean", output=True):
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
     # subprocess.Popen(["vagrant restore {} clean".format(vm.name)])
+    logging.debug("Attempting vagrant command: vagrant restore {} {}".format(name, snapshot_name))
     proc = subprocess.run(["vagrant", "restore", name, snapshot_name], capture_output=True)
     logging.debug("revert_vm STDOUT: {}".format(proc.stdout))
     logging.warning("revert_vm STDERR: {}".format(proc.stderr))
@@ -191,6 +196,7 @@ def snapshot_vm(name, snapshot_name="clean"):
     """
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
+    logging.debug("Attempting vagrant command: vagrant snapshot save {} {}".format(name, snapshot_name))
     proc = subprocess.run(["vagrant", "snapshot", "save", name, snapshot_name], capture_output=True)
     logging.debug("snapshot_vm STDOUT: {}".format(proc.stdout))
     logging.warning("snapshot_vm STDERR: {}".format(proc.stderr))
