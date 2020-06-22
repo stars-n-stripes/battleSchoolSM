@@ -38,6 +38,8 @@ except Exception as e:
         s_start = datetime.datetime.now()
         init_scenario = Scenario(name=s_name, start=s_start, dir=s_dir, duration=s_duration)
         init_scenario.save()
+        SCENARIO = init_scenario
+        SCENARIO_DIR = init_scenario.dir
 
     except FileNotFoundError:
         # Load the default Scenario config located in the app root
@@ -178,8 +180,8 @@ def revert_vm(name, snapshot_name="clean", output=True):
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
     # subprocess.Popen(["vagrant restore {} clean".format(vm.name)])
-    logging.debug("Attempting vagrant command: vagrant restore {} {}".format(name, snapshot_name))
-    proc = subprocess.run(["vagrant", "restore", name, snapshot_name], capture_output=True)
+    logging.debug("Attempting vagrant command: vagrant snapshot restore {} {}".format(name, snapshot_name))
+    proc = subprocess.run(["vagrant", "snapshot", "restore", name, snapshot_name ], capture_output=True)
     logging.debug("revert_vm STDOUT: {}".format(proc.stdout))
     logging.warning("revert_vm STDERR: {}".format(proc.stderr))
 
