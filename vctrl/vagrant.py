@@ -60,7 +60,6 @@ def trigger_cmd(vcmd):
     """
     global LOG_FILE
     # Append the log file to the command string
-    vcmd += " &> {}".format(LOG_FILE)
     args = shlex.split(vcmd)
     # This subprocess is run in a shell to keep it non-blocking while redirecting output.
     logging.debug("Executing vagrant command: {}".format(vcmd))
