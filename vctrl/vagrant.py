@@ -39,7 +39,7 @@ except Exception as e:
         init_scenario = Scenario(name=s_name, start=s_start, dir=s_dir, duration=s_duration)
         init_scenario.save()
         SCENARIO = init_scenario
-        SCENARIO_DIR = init_scenario.dir
+        SCENARIO_DIRECTORY = init_scenario.dir
 
     except FileNotFoundError:
         # Load the default Scenario config located in the app root
@@ -48,7 +48,7 @@ except Exception as e:
         init_scenario = Scenario()
         init_scenario.save()
         SCENARIO = init_scenario
-        SCENARIO_DIR = init_scenario.dir
+        SCENARIO_DIRECTORY = init_scenario.dir
 
 
 def trigger_cmd(vcmd):
