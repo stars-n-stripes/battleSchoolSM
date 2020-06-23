@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import subprocess
+import shlex
 
 from vctrl.models import VM, Scenario
 from django.conf import settings
@@ -58,7 +59,12 @@ def trigger_cmd(vcmd):
     :return:
     """
     global LOG_FILE
-    subprocess.Popen("{} &> {}".format(vcmd, LOG_FILE))
+    # Append the log file to the command string
+    vcmd += " &> {}".format(LOG_FILE)
+    args = shlex.split(vcmd)
+    # This subprocess is run in a shell to keep it non-blocking while redirecting output.
+    logging.debug("Executing vagrant command: {}".format(vcmd))
+    subprocess.Popen(args, shell=True)
 
 
 
