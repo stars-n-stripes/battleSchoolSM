@@ -3,6 +3,11 @@
 {% block title %}{{ section.title }}{% endblock %}
 
 {% block content %}
+	<script>
+setTimeout(function(){
+           location.reload();
+       },10000);
+       </script>
     <h1>{{ section.title }}</h1>
     {% if Scenarios %}
         <h2>Active Scenarios:</h2>

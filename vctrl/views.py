@@ -16,6 +16,7 @@ from .models import VM, Scenario
 # Create your views here.
 def index(request):
     # Update the Scenario and sync the VM database
+    # These probably can't be made non-blocking without something like AJAX or similar
     vagrant.update_scenario()
     vagrant.sync_vms()
     # Pull all VMs that are accessible by the student
@@ -42,8 +43,9 @@ def revertvm(request):
     if vm:
         # Replace with helper function in vagrant.py
         # print("I would have run this command: vagrant restore {} clean".format(vm.name)) # Debug
-        # asyncio.run(vagrant.vagrant_cmd("vagrant", "revert", vm.name, "clean"))
-        vagrant.revert_vm(vm.name)
+        # Replaced for now with the non-blocking call
+        # vagrant.revert_vm(vm.name)
+        vagrant.trigger_cmd("vagrant snapshot restore {} clean".format(vm.name))
         # Restore previous directory
         # chdir(cwd)
         context = {"Message": "Reverted {}".format(vm.name)}  # TODO: Change to view showing VM revert progress

@@ -16,7 +16,7 @@ from datetime import timedelta
 # TODO: Figure out whether or not hard coding this is absolutely necessary
 # CONFIG_FILE = "/scenario/scenario.ini"
 CONFIG_FILE = settings.SCENARIO_CONFIG
-
+LOG_FILE = "~/bssm-vcmd.log"
 
 try:
     SCENARIO = Scenario.objects.get(pk=1)
@@ -51,20 +51,15 @@ except Exception as e:
         SCENARIO_DIR = init_scenario.dir
 
 
-async def vagrant_cmd(*args):
+def trigger_cmd(vcmd):
     """
-    Runs a vagrant command asynchronously
+    Runs a vagrant command in a  non-blocking fashion
     :param str vcmd: Shell command to run
     :return:
     """
-    proc = await asyncio.create_subprocess_exec(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *args)
-    stdout, stderr = await proc.communicate()
+    global LOG_FILE
+    subprocess.Popen("{} &> {}".format(vcmd, LOG_FILE))
 
-    print("{} exited with status code {}".format(args[0], proc.returncode))
-    if stdout:
-        print(f'[stdout]\n{stdout.decode()}')
-    if stderr:
-        print(f'[stderr]\n{stderr.decode()}')
 
 
 def update_scenario():
@@ -166,7 +161,9 @@ def sync_vms():
             SCENARIO.vm_set.create(name=vm.name, status=vm.status)
 
             # Create a snapshot for us to interact with later
-            snapshot_vm(vm.name)
+            # Testing out a non-blocking version of this
+            # snapshot_vm(vm.name)
+            trigger_cmd("vagrant snapshot save {} clean".format(vm.name))
 
 def revert_vm(name, snapshot_name="clean", output=True):
     """
