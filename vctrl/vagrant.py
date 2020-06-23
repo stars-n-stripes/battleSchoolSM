@@ -59,11 +59,18 @@ def trigger_cmd(vcmd):
     :return:
     """
     global LOG_FILE
+    # Change working directory
+    old_cwd = os.getcwd()
+        logging.warning("scenario_status: Moving cwd from {} -> {}".format(old_cwd, SCENARIO_DIRECTORY))
+    os.chdir(SCENARIO_DIRECTORY)
+        
     # Append the log file to the command string
     args = shlex.split(vcmd)
     # This subprocess is run in a shell to keep it non-blocking while redirecting output.
     logging.debug("Executing vagrant command: {}".format(vcmd))
+    logging.debug("Executing vagrant command: {}".format(args))
     subprocess.Popen(args, shell=True)
+    os.chdir(old_cwd)
 
 
 
