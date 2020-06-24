@@ -22,17 +22,20 @@
                 <th>Action</th>
             </tr>
             {% for Scenario in Scenarios %}
-                <td>{{ Scenario.name }}</td>
-                <td>{{ Scenario.start }}</td>
-                <td>{{ Scenario.duration }}</td>
-                <td>
-                    <form action="{% url 'stopscenario' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" name="scenario_name" value="{{ Scenario.name }}">
-                            Stop
-                        </button>
-                    </form>
-                </td>
+                <tr>
+                    <td>{{ Scenario.name }}</td>
+                    <td>{{ Scenario.start }}</td>
+                    <td>{{ Scenario.duration }}</td>
+                    <td>
+                        <form action="{% url 'stopscenario' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="scenario_name" value="{{ Scenario.name }}">
+                                Stop
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
             {% endfor %}
         </table>
     {% else %}
@@ -68,7 +71,7 @@
 
             {% endfor %}
         </table>
-{% else %}
-    <p>Either the Scenario hasn't started yet, or VMs are still being brought up. Check back later!</p>
-{% endif %}
+    {% else %}
+        <p>Either the Scenario hasn't started yet, or VMs are still being brought up. Check back later!</p>
+    {% endif %}
 {% endblock %}
