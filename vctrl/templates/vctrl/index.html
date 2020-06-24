@@ -54,13 +54,11 @@
                 <th>Action</th>
             </tr>
             {% for VM in RevertibleVMs %}
-                <td>{{ VM.name }}</td>
+                <td><strong>{{ VM.name }}</strong></td>
                 <td>{{ VM.status }}</td>
                 <td>
                     <form action="{% url 'revertvm' %}" method="post">
                         {% csrf_token %}
-                        <strong>{{ VM.name }}:
-                        </strong>
 
                         <button type="submit" name="vm_name" value="{{ VM.name }}">Revert
                         </button>
