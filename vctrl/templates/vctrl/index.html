@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load tz %}
 
 {% block title %}{{ section.title }}{% endblock %}
 {# Auto-refresh with meta headers #}
@@ -24,8 +25,11 @@
             {% for Scenario in Scenarios %}
                 <tr>
                     <td>{{ Scenario.name }}</td>
+                    {% localtime on %}
                     <td>{{ Scenario.start }}</td>
+                    {% endlocaltime %}
                     <td>{{ Scenario.remaining }}</td>
+
                     <td>
                         <form action="{% url 'stopscenario' %}" method="post">
                             {% csrf_token %}

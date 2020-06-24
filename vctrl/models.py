@@ -19,7 +19,7 @@ class Scenario(models.Model):
     start = models.DateTimeField(default=timezone.now())
     def remaining(self):
         # Return either the remaining duration or zero if the scenario has expired
-        return min((self.start + self.duration) - timezone.now(), timedelta(0))
+        return max((self.start + self.duration) - timezone.now(), timedelta(0))
 
 
 
