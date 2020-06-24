@@ -175,6 +175,7 @@ def sync_vms():
             # Create a snapshot for us to interact with later
             # Testing out a non-blocking version of this
             # snapshot_vm(vm.name)
+            # TODO: Replace snapshot_vm with the following non-blocking code (or add a blocking bool arg to snapshot)
             trigger_cmd("vagrant snapshot save {} clean".format(vm.name))
 
 def revert_vm(name, snapshot_name="clean", output=True):

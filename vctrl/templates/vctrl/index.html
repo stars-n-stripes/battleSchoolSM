@@ -41,20 +41,30 @@ setTimeout(function(){
     {% endif %}
     {% if RevertibleVMs %}
         <h2>Active Virtual Machines:</h2>
-        <ul>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
             {% for VM in RevertibleVMs %}
-
-                <li>
+                <td>{{ VM.name }}</td>
+                <td>{{ VM.status }}</td>
+                <td>
                     <form action="{% url 'revertvm' %}" method="post">
                         {% csrf_token %}
                         <strong>{{ VM.name }}:
                         </strong>
-                    <button type="submit" name="vm_name" value="{{VM.name }}">Revert
-                    </button>
-            </form>
-        </li>
-    {% endfor %}
-    </ul>
+
+                        <button type="submit" name="vm_name" value="{{ VM.name }}">Revert
+                        </button>
+                    </form>
+                </td>
+
+
+
+            {% endfor %}
+        </table>
 {% else %}
     <p>Either the Scenario hasn't started yet, or VMs are still being brought up. Check back later!</p>
 {% endif %}
