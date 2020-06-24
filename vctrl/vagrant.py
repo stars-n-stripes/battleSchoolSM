@@ -1,15 +1,15 @@
-import asyncio
 import configparser
 import datetime
 import logging
 import os
 import re
-import subprocess
 import shlex
+import subprocess
+from datetime import timedelta
+
+from django.conf import settings
 
 from vctrl.models import VM, Scenario
-from django.conf import settings
-from datetime import timedelta
 
 # Before we can run anything in this module, we need to get the Scenario, or if there is none, try to create one.
 # FIXME: Should we plan for more than one scenario to be in the Database?
@@ -69,7 +69,7 @@ def trigger_cmd(vcmd):
     # This subprocess is run in a shell to keep it non-blocking while redirecting output.
     logging.debug("Executing vagrant command: {}".format(vcmd))
     logging.debug("Executing vagrant command: {}".format(args))
-    subprocess.Popen(args, shell=True)
+    subprocess.Popen(args)
     os.chdir(old_cwd)
 
 
