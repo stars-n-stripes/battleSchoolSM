@@ -1,13 +1,16 @@
 {% extends "base_generic.html" %}
 
 {% block title %}{{ section.title }}{% endblock %}
-
+{# Auto-refresh with meta headers #}
+{% block head %}
+    <meta http-equiv="refresh" content="5"> {% endblock %}
 {% block content %}
-	<script>
-setTimeout(function(){
-           location.reload();
-       },10000);
-       </script>
+    {# Auto-refresh via JS #}
+    {#	<script>#}
+    {#setTimeout(function(){#}
+    {#           location.reload();#}
+    {#       },10000);#}
+    {#       </script>#}
     <h1>{{ section.title }}</h1>
     {% if Scenarios %}
         <h2>Active Scenarios:</h2>
