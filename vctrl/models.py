@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -15,10 +16,10 @@ class Scenario(models.Model):
     description = models.CharField(max_length=200,
                                    default="The default scenario that BSSM loads in the absence of a regular scenario.ini file")
     duration = models.DurationField("Scenario time limit, in hours", default=timedelta(hours=1))
-    start = models.DateTimeField(default=datetime.now())
+    start = models.DateTimeField(default=timezone.now())
     def remaining(self):
         # Return either the remaining duration or zero if the scenario has expired
-        return min((self.start + self.duration) - datetime.now(), 0)
+        return min((self.start + self.duration) - timezone.now(), 0)
 
 
 
