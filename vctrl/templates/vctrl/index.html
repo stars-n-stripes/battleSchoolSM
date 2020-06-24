@@ -54,7 +54,8 @@
                 <th>Action</th>
             </tr>
             {% for VM in RevertibleVMs %}
-                <td><strong>{{ VM.name }}</strong></td>
+                <tr>
+                    <td><strong>{{ VM.name }}</strong></td>
                 <td>{{ VM.status }}</td>
                 <td>
                     <form action="{% url 'revertvm' %}" method="post">
@@ -64,7 +65,7 @@
                         </button>
                     </form>
                 </td>
-
+                </tr>
 
 
             {% endfor %}
