@@ -18,14 +18,14 @@
             <tr>
                 <th>Name</th>
                 <th>Start Time</th>
-                <th>Duration</th>
+                <th>Time Remaining</th>
                 <th>Action</th>
             </tr>
             {% for Scenario in Scenarios %}
                 <tr>
                     <td>{{ Scenario.name }}</td>
                     <td>{{ Scenario.start }}</td>
-                    <td>{{ Scenario.duration }}</td>
+                    <td>{{ Scenario.remaining }}</td>
                     <td>
                         <form action="{% url 'stopscenario' %}" method="post">
                             {% csrf_token %}
