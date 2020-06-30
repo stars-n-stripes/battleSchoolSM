@@ -176,6 +176,7 @@ def sync_vms():
             # Testing out a non-blocking version of this
             # snapshot_vm(vm.name)
             # TODO: Replace snapshot_vm with the following non-blocking code (or add a blocking bool arg to snapshot)
+            # TODO: Some sort of check that verifies that a snapshot was correctly taken
             trigger_cmd("vagrant snapshot save {} clean".format(vm.name))
 
 def revert_vm(name, snapshot_name="clean", output=True):
@@ -190,7 +191,7 @@ def revert_vm(name, snapshot_name="clean", output=True):
     old_cwd = os.getcwd()
     os.chdir(SCENARIO_DIRECTORY)
     # subprocess.Popen(["vagrant restore {} clean".format(vm.name)])
-    logging.debug("Attempting vagrant command: vagrant snapshot restore {} {}".format(name, snapshot_name))
+    logging.debug("Attempting vagrant command: vagrant snapshot restore --provision {} {}".format(name, snapshot_name))
     proc = subprocess.run(["vagrant", "snapshot", "restore", name, snapshot_name ], capture_output=True)
     logging.debug("revert_vm STDOUT: {}".format(proc.stdout))
     logging.warning("revert_vm STDERR: {}".format(proc.stderr))
